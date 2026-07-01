@@ -15,7 +15,11 @@ from aus_econ_model.models.sfc_model import (
     build_flow_of_funds, build_balance_sheet,
 )
 from aus_econ_model.models.keen_model import KeenParams, simulate_keen
-from aus_econ_model.components.charts import THEME, COLOURS, _apply_theme, plot_time_series
+from aus_econ_model.components.charts import THEME, _apply_theme
+
+# Colour list for SFC Explorer charts (COLOURS is a dict; use list here for indexed access)
+SFC_COLOURS = ["#E74C3C", "#3498DB", "#F39C12", "#2ECC71", "#9B59B6",
+               "#1ABC9C", "#E67E22", "#FF6B6B", "#4ECDC4"]
 
 st.set_page_config(page_title="SFC Explorer", page_icon="🏦", layout="wide")
 
@@ -192,10 +196,10 @@ with tab1:
     fig = make_subplots(rows=2, cols=2,
                         subplot_titles=("Wage Share ω", "Employment λ",
                                         "Private Debt/GDP d", "Gov Debt/GDP d_g"))
-    fig.add_trace(go.Scatter(x=sfc_sol.t, y=sfc_sol.omega, name="ω", line=dict(color=COLOURS[0])), row=1, col=1)
-    fig.add_trace(go.Scatter(x=sfc_sol.t, y=sfc_sol.lam, name="λ", line=dict(color=COLOURS[1])), row=1, col=2)
-    fig.add_trace(go.Scatter(x=sfc_sol.t, y=sfc_sol.d, name="d", line=dict(color=COLOURS[2])), row=2, col=1)
-    fig.add_trace(go.Scatter(x=sfc_sol.t, y=sfc_sol.d_g, name="d_g", line=dict(color=COLOURS[3])), row=2, col=2)
+    fig.add_trace(go.Scatter(x=sfc_sol.t, y=sfc_sol.omega, name="ω", line=dict(color=SFC_COLOURS[0])), row=1, col=1)
+    fig.add_trace(go.Scatter(x=sfc_sol.t, y=sfc_sol.lam, name="λ", line=dict(color=SFC_COLOURS[1])), row=1, col=2)
+    fig.add_trace(go.Scatter(x=sfc_sol.t, y=sfc_sol.d, name="d", line=dict(color=SFC_COLOURS[2])), row=2, col=1)
+    fig.add_trace(go.Scatter(x=sfc_sol.t, y=sfc_sol.d_g, name="d_g", line=dict(color=SFC_COLOURS[3])), row=2, col=2)
     for r in range(1, 3):
         for c in range(1, 3):
             fig.update_xaxes(title_text="Years" if r == 2 else "", row=r, col=c)
@@ -210,13 +214,13 @@ with tab1:
         fig2 = make_subplots(rows=2, cols=2,
                              subplot_titles=("Wage Share: SFC vs Base", "Employment: SFC vs Base",
                                              "Private Debt: SFC vs Base", "Gov Debt"))
-        fig2.add_trace(go.Scatter(x=sfc_sol.t, y=sfc_sol.omega, name="SFC ω", line=dict(color=COLOURS[0])), row=1, col=1)
-        fig2.add_trace(go.Scatter(x=base_sol.t, y=base_sol.omega, name="Base ω", line=dict(color=COLOURS[0], dash="dash")), row=1, col=1)
-        fig2.add_trace(go.Scatter(x=sfc_sol.t, y=sfc_sol.lam, name="SFC λ", line=dict(color=COLOURS[1])), row=1, col=2)
-        fig2.add_trace(go.Scatter(x=base_sol.t, y=base_sol.lam, name="Base λ", line=dict(color=COLOURS[1], dash="dash")), row=1, col=2)
-        fig2.add_trace(go.Scatter(x=sfc_sol.t, y=sfc_sol.d, name="SFC d", line=dict(color=COLOURS[2])), row=2, col=1)
-        fig2.add_trace(go.Scatter(x=base_sol.t, y=base_sol.d, name="Base d", line=dict(color=COLOURS[2], dash="dash")), row=2, col=1)
-        fig2.add_trace(go.Scatter(x=sfc_sol.t, y=sfc_sol.d_g, name="Gov Debt d_g", line=dict(color=COLOURS[3])), row=2, col=2)
+        fig2.add_trace(go.Scatter(x=sfc_sol.t, y=sfc_sol.omega, name="SFC ω", line=dict(color=SFC_COLOURS[0])), row=1, col=1)
+        fig2.add_trace(go.Scatter(x=base_sol.t, y=base_sol.omega, name="Base ω", line=dict(color=SFC_COLOURS[0], dash="dash")), row=1, col=1)
+        fig2.add_trace(go.Scatter(x=sfc_sol.t, y=sfc_sol.lam, name="SFC λ", line=dict(color=SFC_COLOURS[1])), row=1, col=2)
+        fig2.add_trace(go.Scatter(x=base_sol.t, y=base_sol.lam, name="Base λ", line=dict(color=SFC_COLOURS[1], dash="dash")), row=1, col=2)
+        fig2.add_trace(go.Scatter(x=sfc_sol.t, y=sfc_sol.d, name="SFC d", line=dict(color=SFC_COLOURS[2])), row=2, col=1)
+        fig2.add_trace(go.Scatter(x=base_sol.t, y=base_sol.d, name="Base d", line=dict(color=SFC_COLOURS[2], dash="dash")), row=2, col=1)
+        fig2.add_trace(go.Scatter(x=sfc_sol.t, y=sfc_sol.d_g, name="Gov Debt d_g", line=dict(color=SFC_COLOURS[3])), row=2, col=2)
         for r in range(1, 3):
             for c in range(1, 3):
                 fig2.update_xaxes(title_text="Years" if r == 2 else "", row=r, col=c)
@@ -239,7 +243,7 @@ with tab2:
         fig3 = go.Figure()
         fig3.add_trace(go.Scatter(x=sfc_sol.t, y=impulse * 100, mode="lines",
                                    name="Fiscal Impulse", fill="tozeroy",
-                                   line=dict(color=COLOURS[4])))
+                                   line=dict(color=SFC_COLOURS[4])))
         fig3.update_layout(height=350, title="Fiscal Impulse (% GDP)",
                            xaxis_title="Years", yaxis_title="% GDP")
         st.plotly_chart(_apply_theme(fig3), width='stretch')
@@ -256,9 +260,9 @@ with tab2:
         """)
         fig4 = go.Figure()
         fig4.add_trace(go.Scatter(x=sfc_sol.t, y=sfc_sol.trade_balance * 100, mode="lines",
-                                   name="Trade Balance", line=dict(color=COLOURS[5])))
+                                   name="Trade Balance", line=dict(color=SFC_COLOURS[5])))
         fig4.add_trace(go.Scatter(x=sfc_sol.t, y=sfc_sol.current_account * 100, mode="lines",
-                                   name="Current Account", line=dict(color=COLOURS[6])))
+                                   name="Current Account", line=dict(color=SFC_COLOURS[6])))
         fig4.add_hline(y=0, line_color="white", line_dash="dot")
         fig4.update_layout(height=350, title="External Sector (% GDP)",
                            xaxis_title="Years", yaxis_title="% GDP")
@@ -276,7 +280,7 @@ with tab3:
         """)
         fig5 = go.Figure()
         fig5.add_trace(go.Scatter(x=sfc_sol.t, y=sfc_sol.bcr * 100, mode="lines",
-                                   name="Bank Capital Ratio", line=dict(color=COLOURS[7])))
+                                   name="Bank Capital Ratio", line=dict(color=SFC_COLOURS[7])))
         fig5.add_hline(y=params.bcr_target * 100, line_dash="dash",
                        annotation_text=f"Target {params.bcr_target:.0%}")
         fig5.update_layout(height=300, title="Bank Capital Ratio (%)",
@@ -292,9 +296,9 @@ with tab3:
         """)
         fig6 = go.Figure()
         fig6.add_trace(go.Scatter(x=sfc_sol.t, y=sfc_sol.pi_e * 100, mode="lines",
-                                   name="Expected Inflation", line=dict(color=COLOURS[8])))
+                                   name="Expected Inflation", line=dict(color=SFC_COLOURS[8])))
         fig6.add_trace(go.Scatter(x=sfc_sol.t, y=sfc_sol.omega * 100, mode="lines",
-                                   name="Wage Share", line=dict(color=COLOURS[0], dash="dot")))
+                                   name="Wage Share", line=dict(color=SFC_COLOURS[0], dash="dot")))
         fig6.update_layout(height=300, title="Inflation & Wage Share",
                            xaxis_title="Years", yaxis_title="%")
         st.plotly_chart(_apply_theme(fig6), width='stretch')

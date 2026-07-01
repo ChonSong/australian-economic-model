@@ -60,7 +60,7 @@ def _apply_theme(fig: go.Figure) -> go.Figure:
     for axis_key in ["xaxis2", "xaxis3", "xaxis4",
                      "yaxis2", "yaxis3", "yaxis4",
                      "xaxis5", "xaxis6", "yaxis5", "yaxis6"]:
-        axis = fig.layout[axis_key]
+        axis = fig.layout.get(axis_key)
         if axis is not None:
             axis.gridcolor = THEME["grid_color"]
             axis.zerolinecolor = THEME["zeroline_color"]
