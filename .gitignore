@@ -1,0 +1,28 @@
+# Virtual environment
+.venv/
+venv/
+env/
+info/
+
+# Python cache
+__pycache__/
+*.py[cod]
+*$py.class
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Data cache large files
+aus_econ_model/data/**/*.parquet
+aus_econ_model/data/**/*.csv
+aus_econ_model/data/**/*.feather
+
+# Streamlit cache
+.streamlit/
