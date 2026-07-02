@@ -52,7 +52,7 @@ Deployed via systemd user service behind nginx/caddy.
 | 2 | **CRITICAL** | `sfc_explorer.py` | `COLOURS` dict used as indexed list — KeyError on chart render |
 | 3 | MEDIUM | `housing_model.py` | `housing_wealth_gdp` = `housing_wealth` (same array, not divided by GDP) |
 | 4 | MEDIUM | `tests/` | No test suite — add pytest coverage |
-| 5 | LOW | `housing_model.py` | P/I ratio hits 15.0x clip ceiling every run |
+| 5 | FIXED | `housing_model.py` | P/I ratio clip ceiling — recalibrated structural trend + mean reversion, widened clip to 30x |
 | 6 | LOW | `01_Model_Simulator.py` | Unused `equilibrium_profit` import |
 | 7 | LOW | `run.sh` | Hardcoded venv path |
 | 8 | LOW | `.streamlit/` | Missing config.toml |

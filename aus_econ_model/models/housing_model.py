@@ -21,10 +21,10 @@ class HousingParams:
     # Structural anchors
     fundamental_price_income: float = 5.0
     initial_price_income: float = 6.5
-    structural_trend: float = 0.005  # Supply constraint + policy drift
+    structural_trend: float = 0.004  # Supply constraint + policy drift
 
     # Mean reversion (weak — AU housing has very slow reversion to fair value)
-    mean_reversion_strength: float = 0.003
+    mean_reversion_strength: float = 0.008
 
     # Mortgage
     mortgage_share_of_debt: float = 0.45
@@ -123,7 +123,7 @@ def simulate_housing(core_sol, params: Optional[HousingParams] = None) -> dict:
         # Total price change
         dp = reversion + credit_push + supply_effect + pop_effect + emp_eff
         dp = np.clip(dp, -0.12, 0.15)
-        pti[i] = np.clip(pti[i - 1] * (1.0 + dp), 1.5, 15.0)
+        pti[i] = np.clip(pti[i - 1] * (1.0 + dp), 1.5, 30.0)
 
         # --- Mortgage debt ---
         hp_g = pti[i] / max(pti[i - 1], 0.01) - 1.0
